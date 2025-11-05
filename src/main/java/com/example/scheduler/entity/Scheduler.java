@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -32,11 +31,9 @@ public class Scheduler {
         date = LocalDate.now(ZoneId.of("Asia/Seoul"));
     }
 
-    public void updateScheduler(String title, String content, String name, int password ) {
+    public void updateScheduler(String title, String name ) {
         this.title = title;
-        this.content = content;
         this.name = name;
-        this.password = password;
         date = LocalDate.now(ZoneId.of("Asia/Seoul"));
     }
 }

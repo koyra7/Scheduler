@@ -1,16 +1,12 @@
 package com.example.scheduler.service;
 
-import com.example.scheduler.dto.CreateSchedulerRequest;
-import com.example.scheduler.dto.CreateSchedulerResponse;
-import com.example.scheduler.dto.GetSchedulerResponse;
+import com.example.scheduler.dto.*;
 import com.example.scheduler.entity.Scheduler;
 import com.example.scheduler.repository.SchedulerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.example.scheduler.entity.Scheduler;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -65,5 +61,32 @@ public class SchedulerService {
                     .toList();
 
 
+    }
+
+    @Transactional
+    public UpdateSchedulerResponse updateScheduler(Long schedulerId, UpdateSchedulerRequest request) {
+        Scheduler scheduler = schedulerRepository.findById(schedulerId).orElseThrow(
+                () -> new IllegalArgumentException("없는 스케쥴입니다.")
+        );
+
+        scheduler.updateScheduler(request.getTitle(), request.getName());
+        return new UpdateSchedulerResponse(
+                scheduler.getId(),
+                scheduler.getTitle(),
+                scheduler.getContent(),
+                scheduler.getName(),
+                scheduler.getDate()
+        );
+    }
+
+    @Transactional
+    public void delete(Long schedulerId) {
+        boolean existence = schedulerRepository.existsById(schedulerId);
+
+        if (!existence) {
+            throw new IllegalArgumentException("없는 스케쥴입니다.");
+        }
+
+        schedulerRepository.deleteById(schedulerId);
     }
 }

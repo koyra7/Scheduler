@@ -15,6 +15,7 @@ public class SchedulerController {
 
     private final SchedulerService schedulerService;
 
+    // 생성
     @PostMapping("/schedulers")
     public ResponseEntity<CreateSchedulerResponse> createScheduler(
             @RequestBody CreateSchedulerRequest request
@@ -22,6 +23,7 @@ public class SchedulerController {
         return ResponseEntity.status(HttpStatus.CREATED).body(schedulerService.createScheduler(request));
     }
 
+    // 단일 조회
     @GetMapping("/schedulers/{schedulerId}")
     public ResponseEntity<GetSchedulerResponse> getScheduler(
             @PathVariable Long schedulerId
@@ -29,11 +31,13 @@ public class SchedulerController {
         return ResponseEntity.ok(schedulerService.findOf(schedulerId));
     }
 
+    // 전체 조회
     @GetMapping("/schedulers")
     public ResponseEntity<List<GetSchedulerResponse>> getAllSchedulers(@RequestParam(required = false) String name) {
         return ResponseEntity.ok(schedulerService.findAll(name));
     }
 
+    // 수정
     @PutMapping("/schedulers/{schedulerId}")
     public ResponseEntity<UpdateSchedulerResponse> updateScheduler(
             @PathVariable Long schedulerId,
@@ -42,11 +46,13 @@ public class SchedulerController {
         return ResponseEntity.ok(schedulerService.updateScheduler(schedulerId, request));
     }
 
+    // 삭제
     @DeleteMapping("/schedulers/{schedulerId}")
     public ResponseEntity<Void> deleteScheduler(
-            @PathVariable Long schedulerId
+            @PathVariable Long schedulerId,
+            @RequestBody DeleteSchedulerRequest request //dto 로 요청함
     ) {
-        schedulerService.delete(schedulerId);
+        schedulerService.delete(schedulerId, request.getPassword()); // Id와 비번 가져옴
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

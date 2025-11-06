@@ -11,5 +11,6 @@ public class UpdateSchedulerRequest {
     private String title;
     private String content;
     private String name;
+    private int password;
     private LocalDate date = LocalDate.now();
 }

@@ -71,6 +71,10 @@ public class SchedulerService {
                 () -> new IllegalArgumentException("없는 스케쥴입니다.")
         );
 
+        if (scheduler.getPassword() != request.getPassword()) { // 비밀번호 불일치시 아래 출력
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.");  // <- 추가: 커스텀 예외 (401 응답)
+        }
+
         scheduler.updateScheduler(request.getTitle(), request.getName()); // 제목과 이름 변경
         return new UpdateSchedulerResponse( // 새로운 id,제목,내용,이름,날짜로 갱신
                 scheduler.getId(),
